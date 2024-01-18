@@ -6,3 +6,7 @@ body,
 button {
   font-family: "Instrument Sans", sans-serif;
 }
+
+body {
+  background-color: #fafafa;
+}
