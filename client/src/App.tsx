@@ -7,10 +7,18 @@ const App = () => {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="">
       {location.pathname !== "/" && <Header />}
       <Routes>
-        <Route path="/" element={<Auth />} />
+        <Route
+          path="/"
+          element={
+            <div className="min-h-screen flex items-center justify-center">
+              <Auth />
+            </div>
+          }
+        />
+
         <Route path="/addLinks" element={<AddLinks />} />
       </Routes>
     </div>
