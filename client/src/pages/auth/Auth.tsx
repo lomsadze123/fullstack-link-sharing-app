@@ -1,5 +1,5 @@
-// import axios from "axios";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../../utils/API";
 import mainLogo from "../../assets/logo-devlinks-large.svg";
@@ -7,7 +7,7 @@ import mail from "../../assets/icon-email.svg";
 import passIcon from "../../assets/icon-password.svg";
 
 const Auth = () => {
-  // const [data, setData] = useState<{} | null>(null);
+  const [data, setData] = useState<{} | null>(null);
   const { handleSubmit, register } = useForm();
   const [formType, setFormType] = useState("signin");
 
