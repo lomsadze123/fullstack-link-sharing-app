@@ -5,11 +5,20 @@ import API from "../../utils/API";
 import mainLogo from "../../assets/logo-devlinks-large.svg";
 import mail from "../../assets/icon-email.svg";
 import passIcon from "../../assets/icon-password.svg";
+import { yupResolver as resolver } from "@hookform/resolvers/yup";
+import getAuthSchema from "../../components/auth/AuthYup";
 
 const Auth = () => {
   const [data, setData] = useState<{} | null>(null);
-  const { handleSubmit, register } = useForm();
   const [formType, setFormType] = useState("signin");
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: resolver(getAuthSchema(formType)),
+  });
 
   // useEffect(() => {
   //   const connectBackEnd = () => {
@@ -56,32 +65,42 @@ const Auth = () => {
             <label className="text-blackMedium text-xs" htmlFor="">
               Email address
             </label>
-            <div className="flex items-center gap-3 bg-white border-[1px] border-greyLight rounded-lg p-3 mt-1">
-              <img src={mail} alt="mail icon" />
-              <input
-                {...register("email", { required: true })}
-                className="w-full outline-none"
-                type="email"
-                placeholder="e.g. alex@email.com"
-              />
+            <div className="flex items-center justify-between gap-3 bg-white border-[1px] border-greyLight rounded-lg p-3 mt-1">
+              <div className="flex gap-2">
+                <img src={mail} alt="mail icon" />
+                <input
+                  {...register("email")}
+                  className="w-full outline-none"
+                  type="email"
+                  placeholder="e.g. alex@email.com"
+                />
+              </div>
+              {errors.email && (
+                <p className="text-xs text-red">{errors.email.message}</p>
+              )}
             </div>
           </div>
           <div>
             <label className="text-blackMedium text-xs" htmlFor="">
               {formType === "signin" ? "Password" : "create password"}{" "}
             </label>
-            <div className="flex items-center gap-3 bg-white border-[1px] border-greyLight rounded-lg p-3 mt-1">
-              <img src={passIcon} alt="password icon" />
-              <input
-                {...register("password", { required: true })}
-                className="w-full outline-none"
-                type="password"
-                placeholder={
-                  formType === "signin"
-                    ? "Enter your password"
-                    : "At least .8 characters"
-                }
-              />
+            <div className="flex items-center justify-between gap-3 bg-white border-[1px] border-greyLight rounded-lg p-3 mt-1">
+              <div className="flex gap-2">
+                <img src={passIcon} alt="password icon" />
+                <input
+                  {...register("password")}
+                  className="w-full outline-none"
+                  type="password"
+                  placeholder={
+                    formType === "signin"
+                      ? "Enter your password"
+                      : "At least .8 characters"
+                  }
+                />
+              </div>
+              {errors.password && (
+                <p className="text-xs text-red">{errors.password.message}</p>
+              )}
             </div>
           </div>
           {formType === "signup" && (
@@ -89,14 +108,19 @@ const Auth = () => {
               <label className="text-blackMedium text-xs" htmlFor="">
                 confirm password
               </label>
-              <div className="flex items-center gap-3 bg-white border-[1px] border-greyLight rounded-lg p-3 mt-1">
-                <img src={passIcon} alt="password icon" />
-                <input
-                  {...register("confirm", { required: true })}
-                  className="w-full outline-none"
-                  type="password"
-                  placeholder="At least .8 characters"
-                />
+              <div className="flex items-center justify-between gap-3 bg-white border-[1px] border-greyLight rounded-lg p-3 mt-1">
+                <div className="flex gap-2">
+                  <img src={passIcon} alt="password icon" />
+                  <input
+                    {...register("confirm")}
+                    className="w-full outline-none"
+                    type="password"
+                    placeholder="At least .8 characters"
+                  />
+                </div>
+                {errors.confirm && (
+                  <p className="text-xs text-red">{errors.confirm.message}</p>
+                )}
               </div>
               <p className="text-blackLight text-xs mt-7">
                 Password must contain at least 8 characters
@@ -117,9 +141,10 @@ const Auth = () => {
               : "Already have an account?"}
           </p>
           <button
-            onClick={() =>
-              setFormType(formType === "signin" ? "signup" : "signin")
-            }
+            onClick={() => {
+              setFormType(formType === "signin" ? "signup" : "signin");
+              reset();
+            }}
             className="text-purple"
           >
             {formType === "signin" ? "Create account" : "Login"}
