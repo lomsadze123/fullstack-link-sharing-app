@@ -10,14 +10,7 @@ const App = () => {
     <div className="">
       {location.pathname !== "/" && <Header />}
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="min-h-screen flex items-center justify-center">
-              <Auth />
-            </div>
-          }
-        />
+        <Route path="/" element={<Auth />} />
 
         <Route path="/addLinks" element={<AddLinks />} />
       </Routes>

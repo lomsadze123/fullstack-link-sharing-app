@@ -9,7 +9,7 @@ const getAuthSchema = (formType: string) => {
     password: yup
       .string()
       .required("Please check again")
-      .min(8, "Password must be at least 8 characters"),
+      .min(8, "Minimum 8 characters"),
     confirm: yup.string(),
   });
 
@@ -17,7 +17,7 @@ const getAuthSchema = (formType: string) => {
     schema = schema.shape({
       confirm: yup
         .string()
-        .required("Confirm password is required")
+        .required("This is required")
         .oneOf([yup.ref("password"), ""], "Passwords must match"),
     });
   }
