@@ -7,6 +7,7 @@ import mail from "../../assets/icon-email.svg";
 import passIcon from "../../assets/icon-password.svg";
 import { yupResolver as resolver } from "@hookform/resolvers/yup";
 import getAuthSchema from "../../components/auth/AuthYup";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [data, setData] = useState<{} | null>(null);
@@ -20,6 +21,7 @@ const Auth = () => {
   } = useForm({
     resolver: resolver(getAuthSchema(formType)),
   });
+  const navigation = useNavigate();
 
   // useEffect(() => {
   //   const connectBackEnd = () => {
@@ -39,6 +41,7 @@ const Auth = () => {
       if (Object.keys(errors).length === 0) {
         console.log("Form submitted successfully");
         // Proceed with form submission
+        navigation("/addLinks");
         const url = "/users";
         const res = await API.get(url);
         console.log(res);
