@@ -5,10 +5,10 @@ const Adder = () => {
   return (
     <div>
       <div>
-        <h2 className="text-blackMedium text-2xl font-bold">
+        <h2 className="text-blackMedium text-2xl font-bold md:text-[32px]">
           Customize your links
         </h2>
-        <p className="text-blackLight mt-3 mb-8">
+        <p className="text-blackLight mt-3 mb-8 md:mt-4 md:mb-10">
           Add/edit/remove links below and then share all your profiles with the
           world!
         </p>
