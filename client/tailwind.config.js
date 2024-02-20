@@ -9,9 +9,13 @@ export default {
         purpleLight: "#EFEBFF",
         blackMedium: "#333333",
         blackLight: "#737373",
+        blackGray: "#1A1A1A",
         greyLight: "#D9D9D9",
         whiteBold: "#FAFAFA",
         red: "#FF3939",
+      },
+      backgroundImage: {
+        phone: "url('./assets/illustration-phone-mockup.svg')",
       },
     },
   },

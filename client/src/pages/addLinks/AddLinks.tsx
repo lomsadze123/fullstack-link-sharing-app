@@ -1,8 +1,10 @@
+import AddDesktop from "../../components/addLinks/AddDesktop";
 import Adder from "../../components/addLinks/Adder";
 
 const AddLinks = () => {
   return (
-    <main className="m-4 bg-white rounded-lg p-6 md:mt-8">
+    <main className="m-4 md:mt-8 lg:flex lg:gap-5">
+      <AddDesktop />
       <Adder />
     </main>
   );
