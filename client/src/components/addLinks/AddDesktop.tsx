@@ -9,15 +9,20 @@ const AddDesktop = () => {
       <h2 className="text-2xl px-4 font-bold bg-white text-blackMedium mt-2">
         Ben Wright
       </h2>
-      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[56px]">
+      <p className="text-blackLight bg-white">ben@example.com</p>
+      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[47px]">
         <h2>github</h2>
         <p>--</p>
       </div>
-      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[23px]">
+      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[22px]">
         <h2 className="lg:text-white">github</h2>
         <p>--</p>
       </div>
-      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[23px]">
+      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[22px]">
+        <h2 className="lg:text-white">github</h2>
+        <p>--</p>
+      </div>
+      <div className="lg:bg-blackGray lg:text-white lg:w-[235px] lg:py-[9px] lg:px-3 lg:rounded-lg lg:flex lg:justify-between lg:mt-[22px]">
         <h2 className="lg:text-white">github</h2>
         <p>--</p>
       </div>
