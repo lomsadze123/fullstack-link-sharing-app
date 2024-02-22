@@ -10,3 +10,13 @@ button {
 body {
   background-color: #fafafa;
 }
+
+ul a {
+  color: #737373;
+}
+
+.active {
+  background-color: #efebff;
+  color: #633cff;
+  border-radius: 8px;
+}

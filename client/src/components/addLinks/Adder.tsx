@@ -3,7 +3,7 @@ import Empty from "./EmptyPage";
 
 const Adder = () => {
   return (
-    <div className="bg-white rounded-lg p-6">
+    <div className="bg-white rounded-lg p-6 lg:w-[665px]">
       <div>
         <h2 className="text-blackMedium text-2xl font-bold md:text-[32px]">
           Customize your links

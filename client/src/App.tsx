@@ -8,7 +8,7 @@ const App = () => {
   const location = useLocation();
 
   return (
-    <div className="">
+    <div className="max-w-[1440px] mx-auto">
       {location.pathname !== "/" && <Header />}
       <Routes>
         <Route path="/" element={<Auth />} />
