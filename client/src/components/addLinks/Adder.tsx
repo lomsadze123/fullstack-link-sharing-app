@@ -1,7 +1,17 @@
+import { useState } from "react";
 import AddLink from "./AddLink";
 import Empty from "./EmptyPage";
 
 const Adder = () => {
+  const [number, setNumber] = useState<number[]>([]);
+
+  const addNewLink = () => {
+    setNumber([
+      ...number,
+      number.length === 0 ? 1 : number[number.length - 1] + 1,
+    ]);
+  };
+
   return (
     <div className="bg-white rounded-lg p-6 lg:w-[665px]">
       <div>
@@ -12,12 +22,28 @@ const Adder = () => {
           Add/edit/remove links below and then share all your profiles with the
           world!
         </p>
-        <button className="w-full text-purple font-bold border-purple border-[1px] rounded-lg py-[11px]">
+        <button
+          onClick={addNewLink}
+          className="w-full text-purple font-bold border-purple border-[1px] rounded-lg py-[11px]"
+        >
           + Add new link
         </button>
       </div>
-      <Empty />
-      {/* <AddLink /> */}
+
+      {number.length > 0 ? (
+        number.map((item, index) => {
+          return (
+            <AddLink
+              key={item}
+              number={index + 1}
+              forFilter={item}
+              setNumber={setNumber}
+            />
+          );
+        })
+      ) : (
+        <Empty />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import AddDesktop from "../../components/addLinks/AddDesktop";
+import AddDesktop from "../../components/desktopAdder/AddDesktop";
 import Adder from "../../components/addLinks/Adder";
 import useWidth from "../../hooks/useWidth";
 

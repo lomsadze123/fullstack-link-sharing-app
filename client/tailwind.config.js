@@ -17,6 +17,9 @@ export default {
       backgroundImage: {
         phone: "url('./assets/illustration-phone-mockup.svg')",
       },
+      boxShadow: {
+        chooseShadow: "0px 0px 32px 0px #0000001A",
+      },
     },
   },
   plugins: [],

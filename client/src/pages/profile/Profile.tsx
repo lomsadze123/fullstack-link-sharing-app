@@ -1,4 +1,4 @@
-import AddDesktop from "../../components/addLinks/AddDesktop";
+import AddDesktop from "../../components/desktopAdder/AddDesktop";
 import ProfileDetails from "../../components/profile/ProfileDetails";
 import useWidth from "../../hooks/useWidth";
 
