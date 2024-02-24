@@ -5,13 +5,39 @@ interface Types {
   setClick: React.Dispatch<React.SetStateAction<boolean>>;
   setActive: React.Dispatch<React.SetStateAction<number>>;
   active: number;
+  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
+  number: number;
+  links: string[];
 }
 
-const ChoosePlatform = ({ setChoose, setClick, setActive, active }: Types) => {
+const ChoosePlatform = ({
+  setChoose,
+  setClick,
+  setActive,
+  active,
+  setLinks,
+  number,
+  links,
+}: Types) => {
   const handleChoose = (title: string, index: number) => {
     setChoose(title);
     setActive(index);
     setClick(false);
+
+    setLinks((prevLinks) => {
+      if (prevLinks.length === number) {
+        console.log("title", title);
+
+        return prevLinks.map((link, i) =>
+          i === prevLinks.length - 1 ? title : link
+        );
+      } else {
+        const updatedLinks = [...prevLinks];
+        updatedLinks[number - 1] = title;
+
+        return updatedLinks;
+      }
+    });
   };
 
   return (

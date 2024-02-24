@@ -2,7 +2,13 @@ import { useState } from "react";
 import AddLink from "./AddLink";
 import Empty from "./EmptyPage";
 
-const Adder = () => {
+const Adder = ({
+  setLinks,
+  links,
+}: {
+  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
+  links: string[];
+}) => {
   const [number, setNumber] = useState<number[]>([]);
 
   const addNewLink = () => {
@@ -38,6 +44,8 @@ const Adder = () => {
               number={index + 1}
               forFilter={item}
               setNumber={setNumber}
+              setLinks={setLinks}
+              links={links}
             />
           );
         })

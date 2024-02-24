@@ -9,30 +9,28 @@ interface Types {
   number: number;
   setNumber: React.Dispatch<React.SetStateAction<number[]>>;
   forFilter: number;
+  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
+  links: string[];
 }
 
-const AddLink = ({ number, setNumber, forFilter }: Types) => {
+const AddLink = ({ number, setNumber, forFilter, setLinks, links }: Types) => {
   const [click, setClick] = useState(false);
   const [choose, setChoose] = useState("GitHub");
   const [active, setActive] = useState(0);
   const findImage = platform.find((item) => item.name === choose);
+
+  const handleRemove = () => {
+    setNumber((prevNum) => prevNum.filter((item) => item !== forFilter));
+  };
 
   return (
     <div className=" bg-whiteBold rounded-xl p-4 mt-6">
       <div className="flex justify-between items-center text-blackLight">
         <div className="flex items-center gap-2 font-bold">
           <img src={lines} alt="two lines icon" />
-          <h3>
-            Links #{number} ----{forFilter}
-          </h3>
+          <h3>Links #{number}</h3>
         </div>
-        <button
-          onClick={() =>
-            setNumber((prevNum) => prevNum.filter((item) => item !== forFilter))
-          }
-        >
-          Remove
-        </button>
+        <button onClick={handleRemove}>Remove</button>
       </div>
       <div className="my-2">
         <span className="text-xs">Platform</span>
@@ -53,6 +51,9 @@ const AddLink = ({ number, setNumber, forFilter }: Types) => {
               setClick={setClick}
               setActive={setActive}
               active={active}
+              setLinks={setLinks}
+              number={number}
+              links={links}
             />
           )}
         </div>
