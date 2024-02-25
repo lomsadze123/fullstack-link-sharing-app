@@ -7,7 +7,6 @@ interface Types {
   active: number;
   setLinks: React.Dispatch<React.SetStateAction<string[]>>;
   number: number;
-  links: string[];
 }
 
 const ChoosePlatform = ({
@@ -17,7 +16,6 @@ const ChoosePlatform = ({
   active,
   setLinks,
   number,
-  links,
 }: Types) => {
   const handleChoose = (title: string, index: number) => {
     setChoose(title);
@@ -26,8 +24,6 @@ const ChoosePlatform = ({
 
     setLinks((prevLinks) => {
       if (prevLinks.length === number) {
-        console.log("title", title);
-
         return prevLinks.map((link, i) =>
           i === prevLinks.length - 1 ? title : link
         );
@@ -41,7 +37,7 @@ const ChoosePlatform = ({
   };
 
   return (
-    <ul className="px-6 bg-white absolute w-full top-[65px] rounded-lg shadow-chooseShadow">
+    <ul className="px-6 bg-white absolute z-10 w-full top-[65px] rounded-lg shadow-chooseShadow">
       {platform.map((platform, index) => (
         <li
           onClick={() => handleChoose(platform.name, index)}

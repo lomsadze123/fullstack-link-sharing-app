@@ -1,13 +1,17 @@
 import user from "../../assets/userimage.png";
+import arrowRight from "../../assets/icon-arrow-right.svg";
+import platform from "../../data/SocialData";
+import { useLinkContext } from "../../context/LinkContext";
 
-const AddDesktop = ({ links }: { links: string[] }) => {
-  console.log(links);
+const AddDesktop = () => {
+  const { links } = useLinkContext();
+
   const colors: { [key: string]: string } = {
     GitHub: "bg-[#1A1A1A]",
     YouTube: "bg-[#EE3939]",
     LinkedIn: "bg-[#2D68FF]",
     Facebook: "bg-[#316FF6]",
-    "Frontend Mentor": "bg-[#FFF]",
+    "Frontend Mentor": "bg-[#9d9d9d]",
   };
 
   return (
@@ -32,8 +36,14 @@ const AddDesktop = ({ links }: { links: string[] }) => {
             index === 0 ? "lg:mt-[47px]" : "lg:mt-[22px]"
           }`}
         >
-          <h2>{link}</h2>
-          <p>--</p>
+          <div className="flex items-center gap-2">
+            <img
+              src={platform.find((item) => item.name === link)?.whiteIcon}
+              alt={platform[index].name}
+            />
+            <h2>{link}</h2>
+          </div>
+          <img src={arrowRight} alt="" />
         </div>
       ))}
     </div>

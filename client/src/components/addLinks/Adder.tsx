@@ -1,20 +1,13 @@
-import { useState } from "react";
+import { useLinkContext } from "../../context/LinkContext";
 import AddLink from "./AddLink";
 import Empty from "./EmptyPage";
 
-const Adder = ({
-  setLinks,
-  links,
-}: {
-  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
-  links: string[];
-}) => {
-  const [number, setNumber] = useState<number[]>([]);
-
+const Adder = () => {
+  const { number, setNumber } = useLinkContext();
   const addNewLink = () => {
-    setNumber([
-      ...number,
-      number.length === 0 ? 1 : number[number.length - 1] + 1,
+    setNumber((prevNum) => [
+      ...prevNum,
+      prevNum.length === 0 ? 1 : prevNum[prevNum.length - 1] + 1,
     ]);
   };
 
@@ -38,16 +31,7 @@ const Adder = ({
 
       {number.length > 0 ? (
         number.map((item, index) => {
-          return (
-            <AddLink
-              key={item}
-              number={index + 1}
-              forFilter={item}
-              setNumber={setNumber}
-              setLinks={setLinks}
-              links={links}
-            />
-          );
+          return <AddLink key={item} number={index + 1} forFilter={item} />;
         })
       ) : (
         <Empty />

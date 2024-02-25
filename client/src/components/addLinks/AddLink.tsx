@@ -1,26 +1,37 @@
 import lines from "../../assets/lines.svg";
 import arrowDown from "../../assets/arrowDown.svg";
 import link from "../../assets/icon-link.svg";
-import { useState } from "react";
 import ChoosePlatform from "./ChoosePlatform";
 import platform from "../../data/SocialData";
+import { useLinkContext } from "../../context/LinkContext";
+import { useState } from "react";
 
 interface Types {
   number: number;
-  setNumber: React.Dispatch<React.SetStateAction<number[]>>;
   forFilter: number;
-  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
-  links: string[];
 }
 
-const AddLink = ({ number, setNumber, forFilter, setLinks, links }: Types) => {
+const AddLink = ({ number, forFilter }: Types) => {
+  const { setNumber, setLinks } = useLinkContext();
+
   const [click, setClick] = useState(false);
   const [choose, setChoose] = useState("GitHub");
   const [active, setActive] = useState(0);
   const findImage = platform.find((item) => item.name === choose);
 
   const handleRemove = () => {
-    setNumber((prevNum) => prevNum.filter((item) => item !== forFilter));
+    setNumber((prevNum) =>
+      prevNum.filter((item, index) => {
+        if (item === forFilter) {
+          // Remove the corresponding link from setLinks as well
+          setLinks((prevLinks) =>
+            prevLinks.filter((_, linkIndex) => linkIndex !== index)
+          );
+          return false; // Filter out the current number
+        }
+        return true; // Keep other numbers
+      })
+    );
   };
 
   return (
@@ -53,7 +64,6 @@ const AddLink = ({ number, setNumber, forFilter, setLinks, links }: Types) => {
               active={active}
               setLinks={setLinks}
               number={number}
-              links={links}
             />
           )}
         </div>
