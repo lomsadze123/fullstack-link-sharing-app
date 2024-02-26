@@ -12,12 +12,11 @@ interface Types {
 }
 
 const AddLink = ({ number, forFilter }: Types) => {
-  const { setNumber, setLinks } = useLinkContext();
+  const { setNumber, setLinks, choose, setChoose } = useLinkContext();
 
   const [click, setClick] = useState(false);
-  const [choose, setChoose] = useState("GitHub");
   const [active, setActive] = useState(0);
-  const findImage = platform.find((item) => item.name === choose);
+  const findImage = platform.find((item) => item.name === choose[number - 1]);
 
   const handleRemove = () => {
     setNumber((prevNum) =>
@@ -27,11 +26,29 @@ const AddLink = ({ number, forFilter }: Types) => {
           setLinks((prevLinks) =>
             prevLinks.filter((_, linkIndex) => linkIndex !== index)
           );
+
+          // Remove the corresponding platform from choose
+          setChoose((prevChoose) =>
+            prevChoose.filter((item) => item !== choose[number - 1])
+          );
+
           return false; // Filter out the current number
         }
         return true; // Keep other numbers
       })
     );
+  };
+
+  const handleAdd = () => {
+    setClick(!click);
+
+    if (choose.length === number) {
+      setChoose((prevChoose) => {
+        const updatedChoose = [...prevChoose];
+        updatedChoose[updatedChoose.length] = "GitHub";
+        return updatedChoose;
+      });
+    }
   };
 
   return (
@@ -47,18 +64,18 @@ const AddLink = ({ number, forFilter }: Types) => {
         <span className="text-xs">Platform</span>
         <div className="relative">
           <button
-            onClick={() => setClick(!click)}
+            onClick={handleAdd}
             className="w-full flex items-center justify-between bg-white p-3 mt-1 text-darkGray rounded-lg border-[1px] border-greyLight"
           >
             <div className="flex items-center gap-2">
               <img src={findImage?.icon} alt="github icon" />
-              <h4>{choose}</h4>
+              <h4>{choose[number - 1]}</h4>
             </div>
             <img src={arrowDown} alt="arrow down" />
           </button>
           {click && (
             <ChoosePlatform
-              setChoose={setChoose}
+              // setChoose={setChoose}
               setClick={setClick}
               setActive={setActive}
               active={active}

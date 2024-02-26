@@ -5,8 +5,8 @@ interface LinkContextType {
   setLinks: React.Dispatch<React.SetStateAction<string[]>>;
   number: number[];
   setNumber: React.Dispatch<React.SetStateAction<number[]>>;
-  choose: string;
-  setChoose: React.Dispatch<React.SetStateAction<string>>;
+  choose: string[];
+  setChoose: React.Dispatch<React.SetStateAction<string[]>>;
   active: number;
   setActive: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -29,7 +29,7 @@ interface LinkProviderProps {
 export const LinkProvider = ({ children }: LinkProviderProps) => {
   const [links, setLinks] = useState<string[]>([]);
   const [number, setNumber] = useState<number[]>([]);
-  const [choose, setChoose] = useState("GitHub");
+  const [choose, setChoose] = useState<string[]>(["GitHub"]);
   const [active, setActive] = useState(0);
 
   const contextValue: LinkContextType = {

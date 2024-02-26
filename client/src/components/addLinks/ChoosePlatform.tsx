@@ -1,7 +1,7 @@
+import { useLinkContext } from "../../context/LinkContext";
 import platform from "../../data/SocialData";
 
 interface Types {
-  setChoose: React.Dispatch<React.SetStateAction<string>>;
   setClick: React.Dispatch<React.SetStateAction<boolean>>;
   setActive: React.Dispatch<React.SetStateAction<number>>;
   active: number;
@@ -10,15 +10,20 @@ interface Types {
 }
 
 const ChoosePlatform = ({
-  setChoose,
   setClick,
   setActive,
   active,
   setLinks,
   number,
 }: Types) => {
+  const { setChoose } = useLinkContext();
   const handleChoose = (title: string, index: number) => {
-    setChoose(title);
+    setChoose((prevChoose) => {
+      const updatedChoose = [...prevChoose];
+      updatedChoose[number - 1] = title;
+      return updatedChoose;
+    });
+
     setActive(index);
     setClick(false);
 
