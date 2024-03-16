@@ -4,7 +4,7 @@ import platform from "../../data/SocialData";
 import { useLinkContext } from "../../context/LinkContext";
 
 const AddDesktop = () => {
-  const { links } = useLinkContext();
+  const { links, userInfo } = useLinkContext();
 
   const colors: { [key: string]: string } = {
     GitHub: "bg-[#1A1A1A]",
@@ -24,9 +24,9 @@ const AddDesktop = () => {
         />
       </div>
       <h2 className="text-2xl px-4 font-bold bg-white text-blackMedium mt-2">
-        Ben Wright
+        {`${userInfo.firstName + " " + userInfo.lastName}`}
       </h2>
-      <p className="text-blackLight bg-white">ben@example.com</p>
+      <p className="text-blackLight bg-white">{userInfo.email}</p>
       {links.map((link, index) => (
         <div
           key={link + index}

@@ -1,15 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-
-interface LinkContextType {
-  links: string[];
-  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
-  number: number[];
-  setNumber: React.Dispatch<React.SetStateAction<number[]>>;
-  choose: string[];
-  setChoose: React.Dispatch<React.SetStateAction<string[]>>;
-  active: number;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-}
+import { createContext, useContext, useState, ReactNode } from "react";
+import { LinkContextType } from "../types/Types";
 
 // Create the LinkContext
 const LinkContext = createContext<LinkContextType | undefined>(undefined);
@@ -31,6 +21,11 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
   const [number, setNumber] = useState<number[]>([]);
   const [choose, setChoose] = useState<string[]>(["GitHub"]);
   const [active, setActive] = useState(0);
+  const [userInfo, setUserInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   const contextValue: LinkContextType = {
     links,
@@ -41,6 +36,8 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
     setChoose,
     active,
     setActive,
+    userInfo,
+    setUserInfo,
   };
 
   return (
