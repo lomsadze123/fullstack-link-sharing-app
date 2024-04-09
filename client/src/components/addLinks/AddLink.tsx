@@ -18,6 +18,9 @@ const AddLink = ({ number, forFilter }: Types) => {
   const [active, setActive] = useState(0);
   const findImage = platform.find((item) => item.name === choose[number - 1]);
 
+  console.log(platform);
+  console.log(choose);
+
   const handleRemove = () => {
     setNumber((prevNum) =>
       prevNum.filter((item, index) => {
@@ -68,7 +71,10 @@ const AddLink = ({ number, forFilter }: Types) => {
             className="w-full flex items-center justify-between bg-white p-3 mt-1 text-darkGray rounded-lg border-[1px] border-greyLight"
           >
             <div className="flex items-center gap-2">
-              <img src={findImage?.icon} alt="github icon" />
+              <img
+                src={findImage?.icon}
+                alt={`${findImage?.name ?? "Github"} icon`}
+              />
               <h4>{choose[number - 1]}</h4>
             </div>
             <img src={arrowDown} alt="arrow down" />
