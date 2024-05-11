@@ -7,6 +7,12 @@ interface Types {
   active: number;
   setLinks: React.Dispatch<React.SetStateAction<string[]>>;
   number: number;
+  setLinkAndProvider: React.Dispatch<
+    React.SetStateAction<{
+      link: string;
+      provider: string;
+    }>
+  >;
 }
 
 const ChoosePlatform = ({
@@ -15,6 +21,7 @@ const ChoosePlatform = ({
   active,
   setLinks,
   number,
+  setLinkAndProvider,
 }: Types) => {
   const { setChoose } = useLinkContext();
   const handleChoose = (title: string, index: number) => {
@@ -45,7 +52,13 @@ const ChoosePlatform = ({
     <ul className="px-6 bg-white absolute z-10 w-full top-[65px] rounded-lg shadow-chooseShadow">
       {platform.map((platform, index) => (
         <li
-          onClick={() => handleChoose(platform.name, index)}
+          onClick={() => {
+            handleChoose(platform.name, index);
+            setLinkAndProvider((prevState) => ({
+              ...prevState,
+              provider: platform.name,
+            }));
+          }}
           key={platform.name}
           className="border-b-[1px] border-b-greyLight py-3 lg:cursor-pointer flex items-center gap-3"
         >

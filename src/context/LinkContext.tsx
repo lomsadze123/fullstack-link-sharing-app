@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { LinkContextType } from "../types/Types";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase/firebase";
 
 // Create the LinkContext
 const LinkContext = createContext<LinkContextType | undefined>(undefined);
@@ -26,6 +28,7 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
     lastName: "",
     email: "",
   });
+  const [user, loading] = useAuthState(auth);
 
   const contextValue: LinkContextType = {
     links,
@@ -38,6 +41,8 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
     setActive,
     userInfo,
     setUserInfo,
+    user,
+    loading,
   };
 
   return (

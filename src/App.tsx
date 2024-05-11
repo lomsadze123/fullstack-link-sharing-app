@@ -3,16 +3,19 @@ import Auth from "./pages/auth/Auth";
 import AddLinks from "./pages/addLinks/AddLinks";
 import Header from "./components/header/Header";
 import Profile from "./pages/profile/Profile";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase/firebase";
+import { useLinkContext } from "./context/LinkContext";
 
 const App = () => {
   const location = useLocation();
-  const [user, loading] = useAuthState(auth);
+  const { user, loading } = useLinkContext();
   console.log(user);
 
   if (!loading && !user && location.pathname !== "/") {
     return <Navigate to="/" />;
+  }
+
+  if (!loading && user && location.pathname === "/") {
+    return <Navigate to="/addLinks" />;
   }
 
   return (

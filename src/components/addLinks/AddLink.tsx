@@ -5,21 +5,30 @@ import ChoosePlatform from "./ChoosePlatform";
 import platform from "../../data/SocialData";
 import { useLinkContext } from "../../context/LinkContext";
 import { useState } from "react";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { CollectionReference, DocumentData, query } from "firebase/firestore";
 
 interface Types {
   number: number;
   forFilter: number;
+  colRef: CollectionReference<DocumentData, DocumentData>;
+  setLinkAndProvider: React.Dispatch<
+    React.SetStateAction<{
+      link: string;
+      provider: string;
+    }>
+  >;
 }
 
-const AddLink = ({ number, forFilter }: Types) => {
+const AddLink = ({ number, forFilter, setLinkAndProvider }: Types) => {
   const { setNumber, setLinks, choose, setChoose } = useLinkContext();
 
   const [click, setClick] = useState(false);
   const [active, setActive] = useState(0);
   const findImage = platform.find((item) => item.name === choose[number - 1]);
 
-  console.log(platform);
-  console.log(choose);
+  // console.log(platform);
+  // console.log(choose);
 
   const handleRemove = () => {
     setNumber((prevNum) =>
@@ -87,6 +96,7 @@ const AddLink = ({ number, forFilter }: Types) => {
               active={active}
               setLinks={setLinks}
               number={number}
+              setLinkAndProvider={setLinkAndProvider}
             />
           )}
         </div>
@@ -96,7 +106,12 @@ const AddLink = ({ number, forFilter }: Types) => {
         <div className="flex items-center gap-2 bg-white p-3 mt-1 text-darkGray rounded-lg border-[1px] border-greyLight">
           <img src={link} alt="link icon" />
           <input
-            onChange={(e) => console.log(e.target.value)}
+            onChange={(e) =>
+              setLinkAndProvider((prevState) => ({
+                ...prevState,
+                link: e.target.value,
+              }))
+            }
             type="text"
             placeholder="e.g. https://www.github.com/lomsadze123"
             className="w-full outline-0"

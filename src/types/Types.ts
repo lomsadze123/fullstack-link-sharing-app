@@ -1,3 +1,5 @@
+import { User } from "firebase/auth";
+
 export interface ChooseTypes {
   choose: string;
   setChoose: React.Dispatch<React.SetStateAction<string>>;
@@ -24,4 +26,6 @@ export interface LinkContextType {
       email: string;
     }>
   >;
+  user: User | null | undefined;
+  loading: boolean;
 }

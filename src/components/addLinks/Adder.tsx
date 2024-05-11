@@ -1,15 +1,73 @@
+import { addDoc, collection, query } from "firebase/firestore";
 import { useLinkContext } from "../../context/LinkContext";
 import SaveButton from "../saveButton/SaveButton";
 import AddLink from "./AddLink";
 import Empty from "./EmptyPage";
+import { useState } from "react";
+import { firestore } from "../../firebase/firebase";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 const Adder = () => {
-  const { number, setNumber } = useLinkContext();
+  const { number, setNumber, user } = useLinkContext();
   const addNewLink = () => {
     setNumber((prevNum) => [
       ...prevNum,
       prevNum.length === 0 ? 1 : prevNum[prevNum.length - 1] + 1,
     ]);
+  };
+
+  const colRef = collection(firestore, "links");
+
+  const [linkAndProvider, setLinkAndProvider] = useState({
+    link: "",
+    provider: "",
+  });
+
+  const addLinkAndProvider = async () => {
+    try {
+      await addDoc(colRef, { ...linkAndProvider, owner: user?.uid });
+      setLinkAndProvider({
+        link: "",
+        provider: "",
+      });
+      console.log("link and provider", linkAndProvider);
+    } catch (error) {
+      console.log("Error from adding link and provider", error);
+    }
+  };
+
+  const renderLinksAndProviders = () => {
+    const queryCol = query(colRef);
+    const [links] = useCollection(queryCol);
+    console.log(links?.docs.map((i) => console.log(i.data())));
+
+    if (links?.docs[0].data()) {
+      return links?.docs.map((item, index) => {
+        return (
+          <AddLink
+            key={item.id}
+            number={index + 1}
+            forFilter={item.data().link}
+            setLinkAndProvider={setLinkAndProvider}
+            colRef={colRef}
+          />
+        );
+      });
+    } else if (number.length > 0) {
+      return number.map((item, index) => {
+        return (
+          <AddLink
+            key={item}
+            number={index + 1}
+            forFilter={item}
+            setLinkAndProvider={setLinkAndProvider}
+            colRef={colRef}
+          />
+        );
+      });
+    } else {
+      return <Empty />;
+    }
   };
 
   return (
@@ -30,15 +88,9 @@ const Adder = () => {
             + Add new link
           </button>
         </div>
-        {number.length > 0 ? (
-          number.map((item, index) => {
-            return <AddLink key={item} number={index + 1} forFilter={item} />;
-          })
-        ) : (
-          <Empty />
-        )}
+        {renderLinksAndProviders()}
       </div>
-      <SaveButton number={number} />
+      <SaveButton number={number} addLinkAndProvider={addLinkAndProvider} />
     </div>
   );
 };
