@@ -1,16 +1,18 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import API from "../../utils/API";
 import mainLogo from "../../assets/logo-devlinks-large.svg";
 import mail from "../../assets/icon-email.svg";
 import passIcon from "../../assets/icon-password.svg";
 import { yupResolver as resolver } from "@hookform/resolvers/yup";
 import getAuthSchema from "../../components/auth/AuthYup";
 import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../../firebase/firebase";
 
 const Auth = () => {
-  const [data, setData] = useState<{} | null>(null);
   const [formType, setFormType] = useState("signin");
   const {
     handleSubmit,
@@ -23,28 +25,41 @@ const Auth = () => {
   });
   const navigation = useNavigate();
 
-  // useEffect(() => {
-  //   const connectBackEnd = () => {
-  //     try {
-  //       const response = axios.get("http://localhost:3000/");
-  //       setData(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   connectBackEnd();
-  // }, []);
+  const signInWithEmailAndPasswordHandler = async (
+    email: string,
+    password: string
+  ) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log("Error from sign in", error);
+    }
+  };
 
-  const onSubmit = async () => {
+  const signUpWithEmailAndPasswordHandler = async (
+    email: string,
+    password: string
+  ) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log("Error from SignUp:", error);
+    }
+  };
+
+  const onSubmit = async (formData: { email: string; password: string }) => {
     try {
       await trigger();
       if (Object.keys(errors).length === 0) {
         console.log("Form submitted successfully");
-        // Proceed with form submission
+
+        const { email, password } = formData;
+        console.log("email: " + email, "password", password);
+
+        formType === "signin"
+          ? await signInWithEmailAndPasswordHandler(email, password)
+          : await signUpWithEmailAndPasswordHandler(email, password);
         navigation("/addLinks");
-        const url = "/users";
-        const res = await API.get(url);
-        console.log(res);
       } else {
         console.log("Form contains errors, please fix them before submitting");
       }

@@ -5,13 +5,23 @@ import profileImg from "../../assets/icon-profile-details-header.svg";
 import eyeImg from "../../assets/icon-preview-header.svg";
 import useWidth from "../../hooks/useWidth";
 import { NavLink } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
 
 const Header = () => {
   const width = useWidth();
 
+  const singOut = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <header className="px-6 py-4 bg-white">
       <nav>
+        <button onClick={singOut}>Sign Out</button>
         <ul className="flex justify-between items-center">
           <NavLink to="/">
             <picture>
