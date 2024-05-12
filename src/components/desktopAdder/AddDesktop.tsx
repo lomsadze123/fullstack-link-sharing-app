@@ -4,7 +4,8 @@ import platform from "../../data/SocialData";
 import { useLinkContext } from "../../context/LinkContext";
 
 const AddDesktop = () => {
-  const { links, userInfo } = useLinkContext();
+  const { choose, userInfo } = useLinkContext();
+  console.log(choose);
 
   const colors: { [key: string]: string } = {
     GitHub: "bg-[#1A1A1A]",
@@ -13,6 +14,8 @@ const AddDesktop = () => {
     Facebook: "bg-[#316FF6]",
     "Frontend Mentor": "bg-[#9d9d9d]",
   };
+
+  const checkForChoose = choose.length === 1 ? choose : choose.slice(0, -1);
 
   return (
     <div className="lg:bg-white lg:grow lg:rounded-lg lg:flex lg:flex-col lg:items-center lg:bg-phone lg:bg-no-repeat lg:bg-center lg:h-[834px]">
@@ -23,11 +26,11 @@ const AddDesktop = () => {
           alt="user image"
         />
       </div>
-      <h2 className="text-2xl px-4 font-bold bg-white text-blackMedium mt-2">
+      <h2 className="text-2xl px-4 font-bold bg-white text-blackMedium mt-2 h-8">
         {`${userInfo.firstName + " " + userInfo.lastName}`}
       </h2>
-      <p className="text-blackLight bg-white">{userInfo.email}</p>
-      {links.map((link, index) => (
+      <p className="text-blackLight bg-white h-6">{userInfo.email}</p>
+      {checkForChoose.map((link, index) => (
         <div
           key={link + index}
           className={`${

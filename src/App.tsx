@@ -8,7 +8,6 @@ import { useLinkContext } from "./context/LinkContext";
 const App = () => {
   const location = useLocation();
   const { user, loading } = useLinkContext();
-  console.log(user);
 
   if (!loading && !user && location.pathname !== "/") {
     return <Navigate to="/" />;

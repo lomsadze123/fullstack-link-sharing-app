@@ -3,25 +3,42 @@ import { useLinkContext } from "../../context/LinkContext";
 import SaveButton from "../saveButton/SaveButton";
 import AddLink from "./AddLink";
 import Empty from "./EmptyPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { firestore } from "../../firebase/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 
 const Adder = () => {
-  const { number, setNumber, user } = useLinkContext();
-  const addNewLink = () => {
-    setNumber((prevNum) => [
-      ...prevNum,
-      prevNum.length === 0 ? 1 : prevNum[prevNum.length - 1] + 1,
-    ]);
-  };
-
-  const colRef = collection(firestore, "links");
-
+  const { number, setNumber, user, setChoose, choose } = useLinkContext();
+  const [add, setAdd] = useState(false);
   const [linkAndProvider, setLinkAndProvider] = useState({
     link: "",
     provider: "",
   });
+  const colRef = collection(firestore, "links");
+  const queryCol = query(colRef);
+  const [links] = useCollection(queryCol);
+
+  const addNewLink = () => {
+    // setNumber((prevNum) => [
+    //   ...prevNum,
+    //   prevNum.length === 0 ? 1 : prevNum[prevNum.length - 1] + 1,
+    // ]);
+
+    return (
+      <AddLink
+        linkAndProvider={linkAndProvider}
+        number={(links && links.docs.length + 1) ?? 0}
+        forFilter={""}
+        setLinkAndProvider={setLinkAndProvider}
+      />
+    );
+  };
+
+  console.log("Choose", choose);
+
+  useEffect(() => {
+    setNumber([1]);
+  }, []);
 
   const addLinkAndProvider = async () => {
     try {
@@ -30,6 +47,8 @@ const Adder = () => {
         link: "",
         provider: "",
       });
+      setAdd(false);
+
       console.log("link and provider", linkAndProvider);
     } catch (error) {
       console.log("Error from adding link and provider", error);
@@ -37,37 +56,25 @@ const Adder = () => {
   };
 
   const renderLinksAndProviders = () => {
-    const queryCol = query(colRef);
-    const [links] = useCollection(queryCol);
-    console.log(links?.docs.map((i) => console.log(i.data())));
-
     if (links?.docs[0].data()) {
-      return links?.docs.map((item, index) => {
-        return (
-          <AddLink
-            key={item.id}
-            number={index + 1}
-            forFilter={item.data().link}
-            setLinkAndProvider={setLinkAndProvider}
-            colRef={colRef}
-          />
-        );
-      });
-    } else if (number.length > 0) {
-      return number.map((item, index) => {
-        return (
-          <AddLink
-            key={item}
-            number={index + 1}
-            forFilter={item}
-            setLinkAndProvider={setLinkAndProvider}
-            colRef={colRef}
-          />
-        );
-      });
+      return links?.docs.map((item, index) => (
+        <AddLink
+          linkAndProvider={linkAndProvider}
+          key={item.id}
+          number={index + 1}
+          forFilter={item.data().link}
+          setLinkAndProvider={setLinkAndProvider}
+        />
+      ));
     } else {
       return <Empty />;
     }
+  };
+
+  const handleAddNewLink = () => {
+    setAdd(true);
+    if (!(links && links?.docs.length < choose.length))
+      setChoose((prev) => [...prev, "GitHub"]);
   };
 
   return (
@@ -82,13 +89,14 @@ const Adder = () => {
             the world!
           </p>
           <button
-            onClick={addNewLink}
+            onClick={handleAddNewLink}
             className="w-full text-purple font-bold border-purple border-[1px] rounded-lg py-[11px]"
           >
             + Add new link
           </button>
         </div>
         {renderLinksAndProviders()}
+        {add && addNewLink()}
       </div>
       <SaveButton number={number} addLinkAndProvider={addLinkAndProvider} />
     </div>

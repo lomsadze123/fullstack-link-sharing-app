@@ -16,36 +16,22 @@ interface Types {
 }
 
 const ChoosePlatform = ({
+  active,
+  setLinkAndProvider,
+  number,
   setClick,
   setActive,
-  active,
-  setLinks,
-  number,
-  setLinkAndProvider,
 }: Types) => {
   const { setChoose } = useLinkContext();
+
   const handleChoose = (title: string, index: number) => {
     setChoose((prevChoose) => {
       const updatedChoose = [...prevChoose];
       updatedChoose[number - 1] = title;
       return updatedChoose;
     });
-
-    setActive(index);
     setClick(false);
-
-    setLinks((prevLinks) => {
-      if (prevLinks.length === number) {
-        return prevLinks.map((link, i) =>
-          i === prevLinks.length - 1 ? title : link
-        );
-      } else {
-        const updatedLinks = [...prevLinks];
-        updatedLinks[number - 1] = title;
-
-        return updatedLinks;
-      }
-    });
+    setActive(index);
   };
 
   return (
