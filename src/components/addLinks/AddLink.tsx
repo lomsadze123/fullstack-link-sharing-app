@@ -4,7 +4,9 @@ import link from "../../assets/icon-link.svg";
 import ChoosePlatform from "./ChoosePlatform";
 import platform from "../../data/SocialData";
 import { useLinkContext } from "../../context/LinkContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { collection, deleteDoc, doc } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
 
 interface Types {
   number: number;
@@ -19,6 +21,8 @@ interface Types {
     link: string;
     provider: string;
   };
+  linkId: string;
+  setLinkId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AddLink = ({
@@ -26,6 +30,8 @@ const AddLink = ({
   forFilter,
   setLinkAndProvider,
   linkAndProvider,
+  linkId,
+  setLinkId,
 }: Types) => {
   const { setLinks, choose, setChoose } = useLinkContext();
 
@@ -46,6 +52,28 @@ const AddLink = ({
     }
   };
 
+  const handleDelete = async (e: any) => {
+    const colRef = collection(firestore, "links");
+
+    try {
+      const docRef = doc(colRef, linkId);
+      if (linkId === "-1") {
+        setChoose((prevChoose) => [...prevChoose.slice(0, -1)]);
+        e.currentTarget.parentNode?.parentNode?.remove();
+      } else {
+        await deleteDoc(docRef);
+      }
+
+      console.log("link deleted", linkId);
+    } catch (error) {
+      console.log("Error from delete", error);
+    }
+  };
+
+  useEffect(() => {
+    setLinkId(linkId);
+  }, [choose]);
+
   return (
     <div className=" bg-whiteBold rounded-xl p-4 mt-6">
       <div className="flex justify-between items-center text-blackLight">
@@ -53,7 +81,7 @@ const AddLink = ({
           <img src={lines} alt="two lines icon" />
           <h3>Links #{number}</h3>
         </div>
-        <button>Remove</button>
+        <button onClick={handleDelete}>Remove</button>
       </div>
       <div className="my-2">
         <span className="text-xs">Platform</span>
