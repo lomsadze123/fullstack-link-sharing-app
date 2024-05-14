@@ -1,8 +1,24 @@
+import { addDoc, collection } from "firebase/firestore";
+import { useLinkContext } from "../../context/LinkContext";
 import SaveButton from "../saveButton/SaveButton";
 import UploadImage from "./UploadImage";
 import UserForm from "./UserForm";
+import { firestore } from "../../firebase/firebase";
 
 const ProfileDetails = () => {
+  const { userInfo, user, setUserInfo } = useLinkContext();
+
+  const handleSaveUserInfo = async () => {
+    const colRef = collection(firestore, "users");
+    await addDoc(colRef, { ...userInfo, owner: user?.uid });
+    console.log("successfully added user info");
+    setUserInfo({
+      firstName: "",
+      lastName: "",
+      email: "",
+    });
+  };
+
   return (
     <main className="bg-white rounded-lg p-6 md:p-8 lg:w-[665px]">
       <div className="mb-16">
@@ -17,7 +33,7 @@ const ProfileDetails = () => {
         <UploadImage />
         <UserForm />
       </div>
-      <SaveButton />
+      <SaveButton handleSaveUserInfo={handleSaveUserInfo} />
     </main>
   );
 };

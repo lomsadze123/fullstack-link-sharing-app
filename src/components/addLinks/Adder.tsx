@@ -37,8 +37,6 @@ const Adder = () => {
     );
   };
 
-  console.log("Choose", choose);
-
   useEffect(() => {
     setNumber([1]);
     if (links && links.docs.length > 0) {

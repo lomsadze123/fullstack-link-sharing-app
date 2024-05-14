@@ -28,4 +28,6 @@ export interface LinkContextType {
   >;
   user: User | null | undefined;
   loading: boolean;
+  setImageURL: React.Dispatch<React.SetStateAction<string>>;
+  imageURL: string;
 }

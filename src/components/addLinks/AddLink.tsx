@@ -38,7 +38,6 @@ const AddLink = ({
   const [click, setClick] = useState(false);
   const [active, setActive] = useState(0);
   const findImage = platform.find((item) => item.name === choose[number - 1]);
-  console.log("find", choose);
 
   const handleAdd = () => {
     setClick(!click);

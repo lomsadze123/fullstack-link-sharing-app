@@ -29,6 +29,7 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
     email: "",
   });
   const [user, loading] = useAuthState(auth);
+  const [imageURL, setImageURL] = useState("");
 
   const contextValue: LinkContextType = {
     links,
@@ -43,6 +44,8 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
     setUserInfo,
     user,
     loading,
+    imageURL,
+    setImageURL,
   };
 
   return (
