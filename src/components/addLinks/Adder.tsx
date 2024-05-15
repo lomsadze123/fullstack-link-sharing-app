@@ -1,11 +1,11 @@
-import { addDoc, collection, doc, query, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useLinkContext } from "../../context/LinkContext";
 import SaveButton from "../saveButton/SaveButton";
 import AddLink from "./AddLink";
 import Empty from "./EmptyPage";
 import { useEffect, useState } from "react";
 import { firestore } from "../../firebase/firebase";
-import { useCollection } from "react-firebase-hooks/firestore";
+import useGetCollections from "../../hooks/useGetCollections";
 
 const Adder = () => {
   const { number, setNumber, user, setChoose, choose } = useLinkContext();
@@ -15,16 +15,9 @@ const Adder = () => {
     link: "",
     provider: "GitHub",
   });
-  const colRef = collection(firestore, "links");
-  const queryCol = query(colRef);
-  const [links] = useCollection(queryCol);
+  const { links } = useGetCollections();
 
   const addNewLink = () => {
-    // setNumber((prevNum) => [
-    //   ...prevNum,
-    //   prevNum.length === 0 ? 1 : prevNum[prevNum.length - 1] + 1,
-    // ]);
-
     return (
       <AddLink
         linkAndProvider={linkAndProvider}
@@ -65,6 +58,7 @@ const Adder = () => {
     : { ...linkAndProvider, provider: "GitHub" };
 
   const addLinkAndProvider = async () => {
+    const colRef = collection(firestore, "links");
     try {
       linkId !== "-1"
         ? handleUpdate()

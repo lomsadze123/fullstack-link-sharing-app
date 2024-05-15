@@ -6,15 +6,26 @@ import eyeImg from "../../assets/icon-preview-header.svg";
 import useWidth from "../../hooks/useWidth";
 import { Link, NavLink } from "react-router-dom";
 import { auth } from "../../firebase/firebase";
+import useGetCollections from "../../hooks/useGetCollections";
 
 const Header = () => {
   const width = useWidth();
-
   const singOut = async () => {
     try {
       await auth.signOut();
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const { links } = useGetCollections();
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(links?.docs[0].data().link);
+      console.log("Copy link successfully");
+    } catch (error) {
+      console.log("Error from copy link", error);
     }
   };
 
@@ -77,8 +88,13 @@ const Header = () => {
                 Back to Editor
               </Link>
             </li>
-            <li className="font-semibold text-white py-[11px] bg-purple px-4 rounded-lg w-full text-center max-w-[133px]">
-              Share Link
+            <li className="font-semibold text-white bg-purple  rounded-lg w-full text-center max-w-[133px]">
+              <button
+                onClick={handleCopyLink}
+                className="w-full block py-[11px]"
+              >
+                Share Link
+              </button>
             </li>
           </ul>
         )}

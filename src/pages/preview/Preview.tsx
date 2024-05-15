@@ -1,7 +1,11 @@
+import MainInfo from "../../components/desktopAdder/MainInfo";
+
 const Preview = () => {
   return (
-    <div className="flex flex-col md:-mt-20 items-center">
-      <h1 className="bg-white p-10 rounded-lg">Preview</h1>
+    <div className="flex flex-col mt-8 md:-mt-20 items-center">
+      <div className="bg-white px-10 pb-14 rounded-lg flex flex-col items-center shadow-lg">
+        <MainInfo />
+      </div>
     </div>
   );
 };
