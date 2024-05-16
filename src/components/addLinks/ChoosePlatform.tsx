@@ -1,19 +1,6 @@
 import { useLinkContext } from "../../context/LinkContext";
 import platform from "../../data/SocialData";
-
-interface Types {
-  setClick: React.Dispatch<React.SetStateAction<boolean>>;
-  setActive: React.Dispatch<React.SetStateAction<number>>;
-  active: number;
-  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
-  number: number;
-  setLinkAndProvider: React.Dispatch<
-    React.SetStateAction<{
-      link: string;
-      provider: string;
-    }>
-  >;
-}
+import { ChoosePlatformTypes } from "../../types/Types";
 
 const ChoosePlatform = ({
   active,
@@ -21,7 +8,7 @@ const ChoosePlatform = ({
   number,
   setClick,
   setActive,
-}: Types) => {
+}: ChoosePlatformTypes) => {
   const { setChoose } = useLinkContext();
 
   const handleChoose = (title: string, index: number) => {

@@ -1,53 +1,8 @@
-import {
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-  listAll,
-} from "firebase/storage";
 import upload from "../../assets/icon-upload-image.svg";
-import { storage } from "../../firebase/firebase";
-import { useEffect } from "react";
-import { useLinkContext } from "../../context/LinkContext";
-import { toast } from "react-toastify";
+import useUploadImage from "../../hooks/useUploadImage";
 
 const UploadImage = () => {
-  const notify = (message: string) => toast(message);
-  const { user, setImageURL, imageURL } = useLinkContext();
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      const storageRef = ref(storage, `images/${user?.uid}/${file.name}`);
-      uploadBytesResumable(storageRef, file)
-        .then(() => {
-          notify("uploaded successfully, refresh page!");
-        })
-        .catch((error) => {
-          console.error("Upload failed", error);
-        });
-    }
-  };
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const imageRef = ref(storage, "images/" + user?.uid);
-        const images = await listAll(imageRef);
-        const urls = await Promise.all(
-          images.items.map(async (image) => {
-            return getDownloadURL(image);
-          })
-        );
-        setImageURL(urls[0]);
-      } catch (error) {
-        console.log("Error fetching image", error);
-      }
-    };
-
-    if (user) {
-      fetchImage();
-    }
-  }, [user]);
+  const { imageURL, handleFileUpload } = useUploadImage();
 
   return (
     <div className="bg-whiteBold p-4 mt-7 md:mt-10 md:flex md:justify-between md:items-center md:p-6">

@@ -6,8 +6,6 @@ export interface ChooseTypes {
 }
 
 export interface LinkContextType {
-  links: string[];
-  setLinks: React.Dispatch<React.SetStateAction<string[]>>;
   number: number[];
   setNumber: React.Dispatch<React.SetStateAction<number[]>>;
   choose: string[];
@@ -30,4 +28,34 @@ export interface LinkContextType {
   loading: boolean;
   setImageURL: React.Dispatch<React.SetStateAction<string>>;
   imageURL: string;
+}
+
+export interface AddLinkTypes {
+  number: number;
+  forFilter: string;
+  setLinkAndProvider: React.Dispatch<
+    React.SetStateAction<{
+      link: string;
+      provider: string;
+    }>
+  >;
+  linkAndProvider: {
+    link: string;
+    provider: string;
+  };
+  linkId: string;
+  setLinkId: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface ChoosePlatformTypes {
+  setClick: React.Dispatch<React.SetStateAction<boolean>>;
+  setActive: React.Dispatch<React.SetStateAction<number>>;
+  active: number;
+  number: number;
+  setLinkAndProvider: React.Dispatch<
+    React.SetStateAction<{
+      link: string;
+      provider: string;
+    }>
+  >;
 }

@@ -1,92 +1,19 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import mainLogo from "../../assets/logo-devlinks-large.svg";
 import mail from "../../assets/icon-email.svg";
 import passIcon from "../../assets/icon-password.svg";
-import { yupResolver as resolver } from "@hookform/resolvers/yup";
-import getAuthSchema from "../../components/auth/AuthYup";
-import { useNavigate } from "react-router-dom";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "../../firebase/firebase";
-import { toast } from "react-toastify";
-import { FirebaseError } from "firebase/app";
+
+import useAuth from "../../hooks/useAuth";
 
 const Auth = () => {
-  const [formType, setFormType] = useState("signin");
   const {
+    setFormType,
     handleSubmit,
     register,
-    formState: { errors },
     reset,
-    trigger,
-  } = useForm({
-    resolver: resolver(getAuthSchema(formType)),
-  });
-  const navigation = useNavigate();
-
-  const notify = (message: string) => toast(message);
-
-  const signInWithEmailAndPasswordHandler = async (
-    email: string,
-    password: string
-  ) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigation("/addLinks");
-    } catch (firebaseError) {
-      if (
-        firebaseError instanceof FirebaseError &&
-        firebaseError.code === "auth/invalid-credential"
-      ) {
-        console.log("auth error: " + firebaseError);
-
-        notify("User not found");
-      } else {
-        console.error("Unexpected error during authentication:", firebaseError);
-      }
-    }
-  };
-
-  const signUpWithEmailAndPasswordHandler = async (
-    email: string,
-    password: string
-  ) => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigation("/addLinks");
-    } catch (error) {
-      console.log("Error from SignUp:", error);
-    }
-  };
-
-  const onSubmit = async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    try {
-      await trigger();
-      if (Object.keys(errors).length === 0) {
-        console.log("Form submitted successfully");
-
-        console.log("email: " + email, "password", password);
-
-        formType === "signin"
-          ? await signInWithEmailAndPasswordHandler(email, password)
-          : await signUpWithEmailAndPasswordHandler(email, password);
-        // navigation("/addLinks");
-      } else {
-        console.log("Form contains errors, please fix them before submitting");
-      }
-    } catch (error) {
-      console.log("onsubmit error", error);
-    }
-  };
+    onSubmit,
+    formType,
+    errors,
+  } = useAuth();
 
   return (
     <div className="min-h-screen flex items-center justify-center">

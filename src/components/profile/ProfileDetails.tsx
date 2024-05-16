@@ -4,19 +4,28 @@ import SaveButton from "../saveButton/SaveButton";
 import UploadImage from "./UploadImage";
 import UserForm from "./UserForm";
 import { firestore } from "../../firebase/firebase";
+import { toast } from "react-toastify";
 
 const ProfileDetails = () => {
   const { userInfo, user, setUserInfo } = useLinkContext();
+  const notify = () => toast("User information saved!");
 
   const handleSaveUserInfo = async () => {
     const colRef = collection(firestore, "users");
-    await addDoc(colRef, { ...userInfo, owner: user?.uid });
-    console.log("successfully added user info");
-    setUserInfo({
-      firstName: "",
-      lastName: "",
-      email: "",
-    });
+    try {
+      if (userInfo.firstName && userInfo.lastName && userInfo.email) {
+        await addDoc(colRef, { ...userInfo, owner: user?.uid });
+        console.log("successfully added user info");
+        setUserInfo({
+          firstName: "",
+          lastName: "",
+          email: "",
+        });
+        notify();
+      }
+    } catch (error) {
+      console.log("Error while saving user info", error);
+    }
   };
 
   return (

@@ -2,28 +2,8 @@ import lines from "../../assets/lines.svg";
 import arrowDown from "../../assets/arrowDown.svg";
 import link from "../../assets/icon-link.svg";
 import ChoosePlatform from "./ChoosePlatform";
-import platform from "../../data/SocialData";
-import { useLinkContext } from "../../context/LinkContext";
-import { useEffect, useState } from "react";
-import { collection, deleteDoc, doc } from "firebase/firestore";
-import { firestore } from "../../firebase/firebase";
-
-interface Types {
-  number: number;
-  forFilter: string;
-  setLinkAndProvider: React.Dispatch<
-    React.SetStateAction<{
-      link: string;
-      provider: string;
-    }>
-  >;
-  linkAndProvider: {
-    link: string;
-    provider: string;
-  };
-  linkId: string;
-  setLinkId: React.Dispatch<React.SetStateAction<string>>;
-}
+import { AddLinkTypes } from "../../types/Types";
+import { useLinks } from "../../hooks/useLinks";
 
 const AddLink = ({
   number,
@@ -32,46 +12,17 @@ const AddLink = ({
   linkAndProvider,
   linkId,
   setLinkId,
-}: Types) => {
-  const { setLinks, choose, setChoose } = useLinkContext();
-
-  const [click, setClick] = useState(false);
-  const [active, setActive] = useState(0);
-  const findImage = platform.find((item) => item.name === choose[number - 1]);
-
-  const handleAdd = () => {
-    setClick(!click);
-
-    if (choose.length === number) {
-      setChoose((prevChoose) => {
-        const updatedChoose = [...prevChoose];
-        updatedChoose[updatedChoose.length] = "GitHub";
-        return updatedChoose;
-      });
-    }
-  };
-
-  const handleDelete = async (e: any) => {
-    const colRef = collection(firestore, "links");
-
-    try {
-      const docRef = doc(colRef, linkId);
-      if (linkId === "-1") {
-        setChoose((prevChoose) => [...prevChoose.slice(0, -1)]);
-        e.currentTarget.parentNode?.parentNode?.remove();
-      } else {
-        await deleteDoc(docRef);
-      }
-
-      console.log("link deleted", linkId);
-    } catch (error) {
-      console.log("Error from delete", error);
-    }
-  };
-
-  useEffect(() => {
-    setLinkId(linkId);
-  }, [choose]);
+}: AddLinkTypes) => {
+  const {
+    active,
+    setActive,
+    findImage,
+    handleAdd,
+    handleDelete,
+    choose,
+    click,
+    setClick,
+  } = useLinks({ number, linkId, setLinkId });
 
   return (
     <div className=" bg-whiteBold rounded-xl p-4 mt-6">
@@ -100,11 +51,9 @@ const AddLink = ({
           </button>
           {click && (
             <ChoosePlatform
-              // setChoose={setChoose}
               setClick={setClick}
               setActive={setActive}
               active={active}
-              setLinks={setLinks}
               number={number}
               setLinkAndProvider={setLinkAndProvider}
             />

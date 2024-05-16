@@ -1,32 +1,10 @@
 import arrowRight from "../../assets/icon-arrow-right.svg";
 import platform from "../../data/SocialData";
-import { useLinkContext } from "../../context/LinkContext";
-import useGetCollections from "../../hooks/useGetCollections";
-import { useEffect } from "react";
+import useUserInfo from "../../hooks/useUserInfo";
 
 const MainInfo = () => {
-  const { choose, userInfo, imageURL, setChoose } = useLinkContext();
-  const { users, links } = useGetCollections();
-
-  const colors: { [key: string]: string } = {
-    GitHub: "bg-[#1A1A1A]",
-    YouTube: "bg-[#EE3939]",
-    LinkedIn: "bg-[#2D68FF]",
-    Facebook: "bg-[#316FF6]",
-    "Frontend Mentor": "bg-[#9d9d9d]",
-  };
-
-  const getUserInfo = () => {
-    if (users?.docs[0]) return users?.docs[0].data();
-    else return undefined;
-  };
-
-  useEffect(() => {
-    setChoose([links?.docs[0].data().provider]);
-  }, [links]);
-
-  const checkForChoose = choose.length === 1 ? choose : choose.slice(0, -1);
-
+  const { userInfo, imageURL, colors, getUserInfo, checkForChoose, links } =
+    useUserInfo();
   return (
     <>
       <div
@@ -61,18 +39,24 @@ const MainInfo = () => {
           key={link + index}
           className={`${
             colors[link]
-          } text-white w-[235px] py-[9px] px-3 rounded-lg flex justify-between ${
+          } text-white w-[235px] py-[9px] px-3 rounded-lg ${
             index === 0 ? "mt-[47px]" : "mt-[22px]"
           }`}
         >
-          <div className="flex items-center gap-2">
-            <img
-              src={platform.find((item) => item.name === link)?.whiteIcon}
-              alt={platform[index].name}
-            />
-            <h2>{link}</h2>
-          </div>
-          <img src={arrowRight} alt="" />
+          <a
+            className="flex justify-between w-full"
+            href={links?.docs[0].data().link}
+            target="_blank"
+          >
+            <div className="flex items-center gap-2">
+              <img
+                src={platform.find((item) => item.name === link)?.whiteIcon}
+                alt={platform[index].name}
+              />
+              <h2>{link}</h2>
+            </div>
+            <img src={arrowRight} alt="" />
+          </a>
         </div>
       ))}
     </>

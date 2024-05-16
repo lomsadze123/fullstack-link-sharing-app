@@ -5,29 +5,32 @@ import profileImg from "../../assets/icon-profile-details-header.svg";
 import eyeImg from "../../assets/icon-preview-header.svg";
 import useWidth from "../../hooks/useWidth";
 import { Link, NavLink } from "react-router-dom";
-import { auth } from "../../firebase/firebase";
+// import { auth } from "../../firebase/firebase";
 import useGetCollections from "../../hooks/useGetCollections";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const width = useWidth();
-  const singOut = async () => {
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const { links } = useGetCollections();
 
+  const notify = () => toast("Link copied successfully");
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(links?.docs[0].data().link);
+      notify();
       console.log("Copy link successfully");
     } catch (error) {
       console.log("Error from copy link", error);
     }
   };
+
+  // const singOut = async () => {
+  //   try {
+  //     await auth.signOut();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <header
@@ -36,7 +39,7 @@ const Header = () => {
       }  md:pb-40`}
     >
       <nav>
-        <button onClick={singOut}>Sign Out</button>
+        {/* <button onClick={singOut}>Sign Out</button> */}
         {location.pathname !== "/preview" ? (
           <ul className="flex justify-between items-center">
             <NavLink to="/">

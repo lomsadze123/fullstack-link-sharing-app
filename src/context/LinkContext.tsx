@@ -19,7 +19,6 @@ interface LinkProviderProps {
 }
 
 export const LinkProvider = ({ children }: LinkProviderProps) => {
-  const [links, setLinks] = useState<string[]>([]);
   const [number, setNumber] = useState<number[]>([]);
   const [choose, setChoose] = useState<string[]>(["GitHub"]);
   const [active, setActive] = useState(0);
@@ -32,8 +31,6 @@ export const LinkProvider = ({ children }: LinkProviderProps) => {
   const [imageURL, setImageURL] = useState("");
 
   const contextValue: LinkContextType = {
-    links,
-    setLinks,
     number,
     setNumber,
     choose,
