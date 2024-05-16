@@ -8,16 +8,19 @@ import upload from "../../assets/icon-upload-image.svg";
 import { storage } from "../../firebase/firebase";
 import { useEffect } from "react";
 import { useLinkContext } from "../../context/LinkContext";
+import { toast } from "react-toastify";
 
 const UploadImage = () => {
+  const notify = (message: string) => toast(message);
   const { user, setImageURL, imageURL } = useLinkContext();
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     if (file) {
       const storageRef = ref(storage, `images/${user?.uid}/${file.name}`);
       uploadBytesResumable(storageRef, file)
-        .then((snapshot) => {
-          console.log("Uploaded a file!", snapshot);
+        .then(() => {
+          notify("uploaded successfully, refresh page!");
         })
         .catch((error) => {
           console.error("Upload failed", error);

@@ -5,6 +5,8 @@ import Header from "./components/header/Header";
 import Profile from "./pages/profile/Profile";
 import { useLinkContext } from "./context/LinkContext";
 import Preview from "./pages/preview/Preview";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const location = useLocation();
@@ -20,6 +22,7 @@ const App = () => {
 
   return (
     <div className="max-w-[1440px] mx-auto">
+      <ToastContainer />
       {location.pathname !== "/" && <Header />}
       <Routes>
         <Route path="/" element={<Auth />} />

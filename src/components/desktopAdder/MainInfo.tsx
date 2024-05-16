@@ -2,9 +2,11 @@ import arrowRight from "../../assets/icon-arrow-right.svg";
 import platform from "../../data/SocialData";
 import { useLinkContext } from "../../context/LinkContext";
 import useGetCollections from "../../hooks/useGetCollections";
+import { useEffect } from "react";
 
 const MainInfo = () => {
-  const { choose, userInfo, imageURL } = useLinkContext();
+  const { choose, userInfo, imageURL, setChoose } = useLinkContext();
+  const { users, links } = useGetCollections();
 
   const colors: { [key: string]: string } = {
     GitHub: "bg-[#1A1A1A]",
@@ -15,11 +17,13 @@ const MainInfo = () => {
   };
 
   const getUserInfo = () => {
-    const { users } = useGetCollections();
-
     if (users?.docs[0]) return users?.docs[0].data();
     else return undefined;
   };
+
+  useEffect(() => {
+    setChoose([links?.docs[0].data().provider]);
+  }, [links]);
 
   const checkForChoose = choose.length === 1 ? choose : choose.slice(0, -1);
 

@@ -48,14 +48,14 @@ const Header = () => {
             <div className="flex">
               <NavLink
                 to="/addLinks"
-                className="px-[27px] py-[11px] md:flex md:gap-2"
+                className="px-[27px] py-[11px] md:flex md:gap-2 md:justify-center"
               >
                 <img src={linksImg} alt="links icon" />
                 {width > 768 && <span className="font-semibold">Links</span>}
               </NavLink>
               <NavLink
                 to="/profile"
-                className="px-[27px] py-[11px] md:flex md:gap-2"
+                className="px-[27px] w-full py-[11px] md:flex md:gap-2"
               >
                 <img src={profileImg} alt="profile details icon" />
                 {width > 768 && (

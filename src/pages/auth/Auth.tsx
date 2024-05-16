@@ -11,6 +11,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+import { toast } from "react-toastify";
+import { FirebaseError } from "firebase/app";
 
 const Auth = () => {
   const [formType, setFormType] = useState("signin");
@@ -25,14 +27,26 @@ const Auth = () => {
   });
   const navigation = useNavigate();
 
+  const notify = (message: string) => toast(message);
+
   const signInWithEmailAndPasswordHandler = async (
     email: string,
     password: string
   ) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      console.log("Error from sign in", error);
+      navigation("/addLinks");
+    } catch (firebaseError) {
+      if (
+        firebaseError instanceof FirebaseError &&
+        firebaseError.code === "auth/invalid-credential"
+      ) {
+        console.log("auth error: " + firebaseError);
+
+        notify("User not found");
+      } else {
+        console.error("Unexpected error during authentication:", firebaseError);
+      }
     }
   };
 
@@ -42,29 +56,35 @@ const Auth = () => {
   ) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      navigation("/addLinks");
     } catch (error) {
       console.log("Error from SignUp:", error);
     }
   };
 
-  const onSubmit = async (formData: { email: string; password: string }) => {
+  const onSubmit = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     try {
       await trigger();
       if (Object.keys(errors).length === 0) {
         console.log("Form submitted successfully");
 
-        const { email, password } = formData;
         console.log("email: " + email, "password", password);
 
         formType === "signin"
           ? await signInWithEmailAndPasswordHandler(email, password)
           : await signUpWithEmailAndPasswordHandler(email, password);
-        navigation("/addLinks");
+        // navigation("/addLinks");
       } else {
         console.log("Form contains errors, please fix them before submitting");
       }
     } catch (error) {
-      console.log(error);
+      console.log("onsubmit error", error);
     }
   };
 
