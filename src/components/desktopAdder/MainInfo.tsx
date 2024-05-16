@@ -45,7 +45,7 @@ const MainInfo = () => {
         >
           <a
             className="flex justify-between w-full"
-            href={links?.docs[0].data().link}
+            href={links?.docs[0] ? links?.docs[0].data().link : "#"}
             target="_blank"
           >
             <div className="flex items-center gap-2">
